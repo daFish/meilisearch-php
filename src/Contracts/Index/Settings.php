@@ -158,6 +158,7 @@ use Meilisearch\Contracts\ReadOnlyArrayAccess;
  *     distinct?: non-empty-string,
  *     federationOptions?: array<mixed>
  * }
+ * @phpstan-type SettingsForeignKey array{foreignIndexUid: non-empty-string, fieldName: non-empty-string}
  * @phpstan-type RawSettings array{
  *     dictionary?: list<string>,
  *     displayedAttributes?: list<string>,
@@ -175,6 +176,7 @@ use Meilisearch\Contracts\ReadOnlyArrayAccess;
  *             filter: array{equality: bool, comparison: bool}
  *         }
  *     }>|null,
+ *     foreignKeys?: list<SettingsForeignKey>,
  *     localizedAttributes?: list<array{locales: list<non-empty-string>, attributePatterns: list<string>}>,
  *     nonSeparatorTokens?: list<string>,
  *     pagination?: array{maxTotalHits: non-negative-int},

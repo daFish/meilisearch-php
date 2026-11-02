@@ -7,6 +7,7 @@ namespace Tests\Contracts;
 use Meilisearch\Contracts\Task;
 use Meilisearch\Contracts\TaskDetails\DocumentAdditionOrUpdateDetails;
 use Meilisearch\Contracts\TaskDetails\IndexCreationDetails;
+use Meilisearch\Contracts\TaskDetails\SettingsUpdateDetails;
 use Meilisearch\Contracts\TaskDetails\UnknownTaskDetails;
 use Meilisearch\Contracts\TaskError;
 use Meilisearch\Contracts\TaskStatus;
@@ -160,6 +161,25 @@ final class TaskTest extends TestCase
         ]);
 
         self::assertEquals(new DocumentAdditionOrUpdateDetails(10, 8), $task->getDetails());
+    }
+
+    public function testFromArrayWithSettingsUpdateDetailsExposesForeignKeys(): void
+    {
+        $foreignKeys = [
+            ['foreignIndexUid' => 'authors', 'fieldName' => 'author'],
+            ['foreignIndexUid' => 'authors', 'fieldName' => 'related_authors'],
+        ];
+
+        $task = Task::fromArray([
+            'taskUid' => 5,
+            'status' => 'succeeded',
+            'type' => 'settingsUpdate',
+            'enqueuedAt' => '2025-04-09T10:28:12.236789123Z',
+            'details' => ['foreignKeys' => $foreignKeys],
+        ]);
+
+        self::assertInstanceOf(SettingsUpdateDetails::class, $details = $task->getDetails());
+        self::assertSame($foreignKeys, $details->foreignKeys);
     }
 
     #[TestWith([TaskType::SnapshotCreation, 'snapshotCreation'])]

@@ -561,6 +561,21 @@ update_prefix_search_settings_1: |-
   $client->index('INDEX_NAME')->updatePrefixSearch('disabled');
 reset_prefix_search_settings_1: |-
   $client->index('INDEX_NAME')->resetPrefixSearch();
+get_foreign_keys_setting_1: |-
+  $client->index('books')->getForeignKeys();
+update_foreign_keys_setting_1: |-
+  $client->index('books')->updateForeignKeys([
+    [
+      'foreignIndexUid' => 'authors',
+      'fieldName' => 'author'
+    ],
+    [
+      'foreignIndexUid' => 'authors',
+      'fieldName' => 'related_authors'
+    ]
+  ]);
+reset_foreign_keys_setting_1: |-
+  $client->index('books')->resetForeignKeys();
 get_all_batches_1: |-
   $client->getBatches();
 get_batch_1: |-

@@ -17,6 +17,7 @@ use function Meilisearch\waitForTask;
 /**
  * @phpstan-import-type SettingsEmbedders from Settings
  * @phpstan-import-type SettingsEmbeddersUpdate from Settings
+ * @phpstan-import-type SettingsForeignKey from Settings
  */
 trait HandlesSettings
 {
@@ -608,5 +609,35 @@ trait HandlesSettings
         }
 
         return Task::fromArray($this->http->patch(self::PATH.'/'.$this->uid.'/settings/chat', (object) $body), partial(waitForTask(...), $this->http));
+    }
+
+    // Settings - Foreign keys
+
+    /**
+     * @return list<SettingsForeignKey>
+     *
+     * @since Meilisearch v1.39.0
+     */
+    public function getForeignKeys(): array
+    {
+        return $this->http->get(self::PATH.'/'.$this->uid.'/settings/foreign-keys');
+    }
+
+    /**
+     * @param list<SettingsForeignKey> $foreignKeys
+     *
+     * @since Meilisearch v1.39.0
+     */
+    public function updateForeignKeys(array $foreignKeys): Task
+    {
+        return Task::fromArray($this->http->put(self::PATH.'/'.$this->uid.'/settings/foreign-keys', $foreignKeys), partial(waitForTask(...), $this->http));
+    }
+
+    /**
+     * @since Meilisearch v1.39.0
+     */
+    public function resetForeignKeys(): Task
+    {
+        return Task::fromArray($this->http->delete(self::PATH.'/'.$this->uid.'/settings/foreign-keys'), partial(waitForTask(...), $this->http));
     }
 }

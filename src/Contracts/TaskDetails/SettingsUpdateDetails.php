@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Meilisearch\Contracts\TaskDetails;
 
+use Meilisearch\Contracts\Index\Settings;
 use Meilisearch\Contracts\TaskDetails;
 
 /**
+ * @phpstan-import-type SettingsForeignKey from Settings
+ *
  * @phpstan-type RawSettingsUpdateDetails array{
  *     dictionary?: list<string>,
  *     displayedAttributes?: list<string>,
@@ -31,6 +34,7 @@ use Meilisearch\Contracts\TaskDetails;
  *     faceting?: array{maxValuesPerFacet: non-negative-int, sortFacetValuesBy: array<string, 'alpha'|'count'|'sampledCount'>}|null,
  *     facetSearch?: bool,
  *     filterableAttributes?: list<string|array{attributePatterns: list<string>, features: array{facetSearch: bool, filter: array{equality: bool, comparison: bool}}}>|null,
+ *     foreignKeys?: list<SettingsForeignKey>|null,
  *     localizedAttributes?: list<array{locales: list<non-empty-string>, attributePatterns: list<string>}>,
  *     nonSeparatorTokens?: list<string>,
  *     pagination?: array{maxTotalHits: non-negative-int},
@@ -78,6 +82,7 @@ final class SettingsUpdateDetails implements TaskDetails
      * }>|null $embedders
      * @param array{maxValuesPerFacet: non-negative-int, sortFacetValuesBy: array<string, 'alpha'|'count'|'sampledCount'>}|null                             $faceting
      * @param list<string|array{attributePatterns: list<string>, features: array{facetSearch: bool, filter: array{equality: bool, comparison: bool}}}>|null $filterableAttributes
+     * @param list<SettingsForeignKey>|null                                                                                                                 $foreignKeys
      * @param list<array{locales: list<non-empty-string>, attributePatterns: list<string>}>|null                                                            $localizedAttributes
      * @param list<string>|null                                                                                                                             $nonSeparatorTokens
      * @param array{maxTotalHits: non-negative-int}|null                                                                                                    $pagination
@@ -106,6 +111,7 @@ final class SettingsUpdateDetails implements TaskDetails
         public readonly ?array $faceting,
         public readonly ?bool $facetSearch,
         public readonly ?array $filterableAttributes,
+        public readonly ?array $foreignKeys,
         public readonly ?array $localizedAttributes,
         public readonly ?array $nonSeparatorTokens,
         public readonly ?array $pagination,
@@ -132,6 +138,7 @@ final class SettingsUpdateDetails implements TaskDetails
             $data['faceting'] ?? null,
             $data['facetSearch'] ?? null,
             $data['filterableAttributes'] ?? null,
+            $data['foreignKeys'] ?? null,
             $data['localizedAttributes'] ?? null,
             $data['nonSeparatorTokens'] ?? null,
             $data['pagination'] ?? null,
